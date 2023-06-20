@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>Página Inicial - Projeto Cadastro IFSP</h3>
+    <h1>PÁGINA INICIAL - PROJETO CAIXA</h1>
     <?php 
         if(!empty($_SESSION['login'])){ // caso a sessão esteja diferente de vazia
             // executa isso.
@@ -25,9 +25,7 @@
        <li><a href="listar_fluxo_caixa.php">Listar</a></li>
        <li><a href="consulta_fluxo_caixa.php">Consultar</a></li>
        <?php 
-       if(empty($_SESSION['login'])){ // caso a sessão esteja vazia mostra o botão de login
-       echo "<li><a href='login.html'>Login</a></li>";
-        }
+       
        ?>
     </ul>
 </body>
