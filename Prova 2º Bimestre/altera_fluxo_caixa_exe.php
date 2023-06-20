@@ -3,11 +3,11 @@
     include('conexao.php');
     
     $id = $_POST['id'];
-    $data= $_POST['data'];
-    $tipo = $_POST['tipo'];
-    $valor = $_POST['valor'];
-    $historico = $_POST['historico'];
-    $cheque = $_POST['cheque'];
+    $data= $_POST['Data'];
+    $tipo = $_POST['Tipo'];
+    $valor = $_POST['Valor'];
+    $historico = $_POST['Histórico'];
+    $cheque = $_POST['Cheque'];
     
     
     echo "<h1>Alteração de dados</h1>";
@@ -18,7 +18,7 @@
     if($result){
         echo "Dados alterados com sucesso! <br>";
     }else{
-        echo "Erro ao alterar dados:  ".mysqli_error($con)."!";
+        echo "Erro na alteração de dados:  ".mysqli_error($con)."!";
     }
 ?>
 <a href="index.php">Voltar</a>
