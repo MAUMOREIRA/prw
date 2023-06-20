@@ -1,9 +1,9 @@
 <?php
 
-$servername = "localhost";
-$username = "seu_usuario";
-$password = "sua_senha";
-$dbname = "seu_banco_de_dados";
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$database = 'prova2';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
