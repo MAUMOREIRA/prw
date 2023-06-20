@@ -1,53 +1,77 @@
+<?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "prova2";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+
+if ($conn->connect_error) {
+    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+}
+
+
+$sql = "SELECT * FROM tabela ORDER BY codigo";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de Informações Cadastradas</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
+    <h1>Lista de Informações Cadastradas</h1>
+    <table>
+        <tr>
+            <th>Código</th>
+            <th>Data</th>
+            <th>Tipo</th>
+            <th>Valor</th>
+            <th>Histórico</th>
+            <th>Cheque</th>
+            <th>Excluir</th>
+        </tr>
         <?php
-            include('conexao.php');
-            $sql = "SELECT * FROM fluxo_caixa";
-            // mysqli_query => executa um comando no anco de dados
-            $result = mysqli_query($con,$sql);
-            // mysqli_fetch_array => retorna apenas uma linha do registros retornados 
-            $row = mysqli_fetch_array($result);
+        
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row['codigo'] . "</td>";
+                echo "<td>" . $row['data'] . "</td>";
+                echo "<td>" . $row['tipo'] . "</td>";
+                echo "<td>" . $row['valor'] . "</td>";
+                echo "<td>" . $row['historico'] . "</td>";
+                echo "<td>" . $row['cheque'] . "</td>";
+                echo "<td><a href='excluir.php?id=" . $row['codigo'] . "'>Excluir</a></td>";
+                echo "</tr>";
+            }
+        } else {
+            echo "<tr><td colspan='7'>Nenhum registro encontrado.</td></tr>";
+        }
         ?>
-        <h1>Consulta de usuários</h1>
-        <table align="center" border="1" width="500" bordercolor="purple" bgcolor="#FFC0CB">
-
-            <tr>
-                <th>Código</th>
-                <th>Data</th>
-                <th>Tipo</th>
-                <th>Valor</th>
-                <th>Histórico</th>
-                <th>Cheque</th>
-                <th>Excluir</th>
-            </tr>
-            <?php
-                do{
-                    if($row)
-                    {
-                        echo "<tr>";
-                        echo "<td>".$row['id_usuario']."</td>";
-                        if($row['foto'] == "")
-                            echo "<td></td>";
-                        else
-                            echo "<td><img src='".$row['foto']."'width='80' height='100'/></td>";
-                        echo "<td>".$row['nome_usuario']."</td>";
-                        echo "<td>".$row['email_usuario']."</td>";
-                        echo "<td>".$row['fone_usuario']."</td>";
-                        echo "<td><a href='altera_fluxo_caixa.php?id_usuario=".$row['id_usuario']."'>Alterar</a></td>";
-                        echo "<td><a href='excluir_fluxo_caixa.php?id_usuario=".$row['id_usuario']."'>Deletar</a></td>";
-                        echo "</tr>";
-                    }
-                }while($row = mysqli_fetch_array($result))
-            ?>
-            <a href = "index.php">Voltar</a>
-        </table>
-
+    </table>
 </body>
 </html>
+
+<?php
+
+$conn->close();
+?>

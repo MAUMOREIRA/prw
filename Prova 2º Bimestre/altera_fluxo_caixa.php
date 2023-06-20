@@ -1,67 +1,63 @@
 <?php
-
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'prova2';
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-
-if ($conn->connect_error) {
-    die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-}
-
-
-$id_registro = $_GET['id'];
-
-
-$sql = "SELECT Data, Tipo, Valor, Histórico, Cheque FROM tabela WHERE id = $id_registro";
-$result = $conn->query($sql);
-
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-
-    
-    $data = $row['Data'];
-    $tipo = $row['Tipo'];
-    $valor = $row['Valor'];
-    $historico = $row['Histórico'];
-    $cheque = $row['Cheque'];
-} else {
-    echo "Registro não encontrado.";
-    exit();
-}
-
-
-$conn->close();
+    include('conexao.php');
+    $id = $_GET['id'];
+    $sql = "select * from fluxo_caixa where id = $id";
+    $result = mysqli_query($con, $sql);
+    $row = mysqli_fetch_array($result); 
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Formulário de Alteração</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=h1, initial-scale=1.0">
+    <title>Alterar</title>
 </head>
 <body>
-    <h1>Formulário de Alteração</h1>
+    <h1>Alterar fluxo de caixa</h1>
     <form action="altera_fluxo_caixa_exe.php" method="POST">
-        <label for="data">Data:</label>
-        <input type="text" id="data" name="data" value="<?php echo $data; ?>" required><br><br>
-        
-        <label for="tipo">Tipo:</label>
-        <input type="text" id="tipo" name="tipo" value="<?php echo $tipo; ?>" required><br><br>
-        
-        <label for="Valor">Valor:</label>
-        <input type="text" id="Valor" name="Valor" value="<?php echo $valor; ?>" required><br><br>
-
-        <label for="Histórico">Histórico:</label>
-        <input type="text" id="Histórico" name="Histórico" value="<?php echo $historico; ?>" required><br><br>
-        
-        <label for="cheque">Cheque:</label>
-        <input type="text" id="cheque" name="cheque" value="<?php echo $cheque; ?>" required><br><br>
-        
-        <input type="submit" value="Salvar Alterações">
+        <input type="hidden" name="id" value="<?php echo $row['id']?>">
+        <div>
+            <label for="data">Data:</label>
+            <input type="date" name="data" id="data" value="<?php echo $row['data']?>">
+        </div>
+        <div>
+            <label for="tipo">Tipo:</label>
+            <?php 
+                if($row['tipo'] == "entrada"){
+                    echo "<input type='radio' name='tipo' id='tipo' value='entrada' checked> Entrada";
+                    echo "<input type='radio' name='tipo' id='tipo' value='saida'> Saída";
+                }else{
+                    echo "<input type='radio' name='tipo' id='tipo' value='entrada' > Entrada";
+                    echo "<input type='radio' name='tipo' id='tipo' value='saida' checked> Saída";
+                }
+            ?>
+        </div>
+        <div>
+            <label for="valor">Valor:</label>
+            <input type="number" min="0" name="valor" step=".01" id="valor" value="<?php echo $row['valor']?>">
+        </div>
+        <div>
+            <label for="historico">Histórico</label>
+            <input type="text" name="historico" id="historico" value="<?php echo $row['historico']?>">
+        </div>
+        <div>
+            <label for="cheque">Cheque:</label>
+            <select name='cheque' id='cheque' size='1'>
+            <?php 
+                if($row['cheque'] == "sim"){
+                    echo "<option  selected value='sim'>Sim</option>";
+                    echo "<option value='nao'>Nao</option>";
+                }else{
+                    echo "<option value='sim'>Sim</option>";
+                    echo "<option  selected value='nao'>Nao</option>";
+                }
+            ?>
+            </select>
+        </div>
+        <input type="submit" value="Salvar">
     </form>
+
+    <a href="listar_fluxo_caixa.php">Voltar</a>
 </body>
 </html>
