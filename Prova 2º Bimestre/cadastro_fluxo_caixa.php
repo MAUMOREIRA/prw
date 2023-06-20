@@ -1,38 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-</head>
-<body>
-    <h3>Cadastro de Fluxo de caixa</h3>
-    <form action="cadastro_fluxo_caixa.php" method="POST">
-        <div>
-            <label for="data">Data:</label>
-            <input type="date" name="data" id="data">
-        </div>
-        <div>
-            <label for="tipo">Tipo:</label>
-            <input type="radio" name="tipo" id="tipo" value="entrada"> Entrada
-            <input type="radio" name="tipo" id="tipo" value="saida"> Saída
-        </div>
-        <div>
-            <label for="valor">Valor:</label>
-            <input type="number" min="0" name="valor" step=".01" id="valor">
-        </div>
-        <div>
-            <label for="historico">Histórico</label>
-            <input type="text" name="historico" id="historico">
-        </div>
-        <div>
-            <label for="cheque">Cheque:</label>
-            <select name="cheque" id="cheque" size="1">
-                <option value="sim">Sim</option>
-                <option value="nao">Nao</option>
-            </select>
-        </div>
-        <input type="submit" value="Salvar">
-    </form>
-</body>
-</html>
+<?php 
+include("conexao.php");
+
+$data = $_POST['data'];
+$tipo = $_POST['tipo'];
+$valor = $_POST['valor'];
+$historico = $_POST['historico'];
+$cheque = $_POST['cheque'];
+
+
+echo "<h1>Dados do usuário</h1>";
+echo "Data: $data <br>";
+echo "Tipo: $tipo <br>";
+echo "Valor: $valor <br>";
+echo "Histórico: $historico <br>";
+echo "Cheque: $cheque <br>";
+
+$sql = "INSERT INTO fluxo_caixa (data,tipo,valor,historico,cheque)";
+$sql .= "VALUES ('".$data."','".$tipo."','".$valor."','".$historico."','".$cheque."')";
+
+echo $sql;
+$result = mysqli_query($con, $sql);
+
+if($result){
+echo "Dados cadastrados com sucesso";}
+else{
+echo "Erro ao tentar cadastrar!";}
+
+
+?>
